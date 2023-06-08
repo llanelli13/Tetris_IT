@@ -2,18 +2,14 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+public class Scoreboard extends JFrame{
 
-
-public class Gamepage extends JFrame{
-
-
-    public Gamepage(){
+    public Scoreboard(){
         setTitle("TETRIS");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setSize(400, 700);
         setLocationRelativeTo(null);
         setLayout(new FlowLayout());
-
 
 
         JButton home = new JButton("Home");
@@ -31,6 +27,5 @@ public class Gamepage extends JFrame{
 
 
         add(home);
-
     }
 }

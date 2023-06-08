@@ -5,9 +5,9 @@ import java.awt.event.ActionListener;
 
 public class Homepage extends JFrame {
     public Homepage() {
-        setTitle("Menu de Redirection");
+        setTitle("Homepage");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        setSize(400, 300);
+        setSize(400, 700);
         setLocationRelativeTo(null);
         setLayout(new FlowLayout());
 
@@ -17,31 +17,23 @@ public class Homepage extends JFrame {
 
         bouton1.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                dispose();
-                JFrame frame = new JFrame("Game");
-                frame.setSize(300, 200);
-                frame.setLocationRelativeTo(null);
-                frame.setVisible(true);
+                dispose(); // Ferme la fenêtre actuelle
+                Gamepage gamePage = new Gamepage();
+                gamePage.setVisible(true);
             }
         });
 
         bouton2.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 dispose();
-                JFrame frame = new JFrame("Page 2");
-                frame.setSize(300, 200);
-                frame.setLocationRelativeTo(null);
-                frame.setVisible(true);
+                Scoreboard score = new Scoreboard();
+                score.setVisible(true);
             }
         });
 
         bouton3.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 dispose();
-                JFrame frame = new JFrame("Page 3");
-                frame.setSize(300, 200);
-                frame.setLocationRelativeTo(null);
-                frame.setVisible(true);
             }
         });
 
