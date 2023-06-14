@@ -4,8 +4,15 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+import java.util.Random;
 
 public class GameArea extends JPanel implements KeyListener{
+
+    public static int STATE_GAME_PLAY = 0;
+    public static int STATE_GAME_PAUSE = 1;
+    public static int STATE_GAME_OVER = 2;
+
+    private int state = STATE_GAME_PLAY;
 
     private static int FPS = 60;
     private static int delay = 1000 / FPS;
@@ -13,17 +20,50 @@ public class GameArea extends JPanel implements KeyListener{
     public static final int GameArea_height = 20;
     public static final int block_size = 30;
     private Timer score;
-    private Color[][] gamearea = new Color[GameArea_width][GameArea_height];
-    private int[][] shape1 = {
-            {1, 1, 1},
-            {0, 1, 0}
-    };
+    private Color[][] gamearea = new Color[GameArea_height][GameArea_width];
+    private Block[] blocks = new Block[7];
 
     private Block block;
+    private Color[] colors = {Color.decode("#ed1c24"), Color.decode("#ff7f27"), Color.decode("#fff200"),
+                                Color.decode("#22b14c"), Color.decode("#00a2e8"), Color.decode("#a249a4"), Color.decode("#3f48cc")};
+
+    private Block currentBlock;
+
+    private Random random;
 
 
     public GameArea(){
-        block = new Block(shape1);
+
+        random = new Random();
+        blocks[0] = new Block(new int[][]{
+                {1,1,1,1}}, this, colors[0]);
+
+        blocks[1] = new Block(new int[][]{
+                {1,1,1},
+                {0,1,0}},this, colors[1]);
+
+        blocks[2] = new Block(new int[][]{
+                {1,1,1},
+                {1,0,0}},this, colors[2]);
+
+        blocks[3] = new Block(new int[][]{
+                {1,1,1},
+                {0,0,1}},this, colors[3]);
+
+        blocks[4] = new Block(new int[][]{
+                {0,1,1},
+                {1,1,0}},this, colors[4]);
+
+        blocks[5] = new Block(new int[][]{
+                {1,1,0},
+                {0,1,1}},this, colors[5]);
+
+        blocks[6] = new Block(new int[][]{
+                {1,1},
+                {1,1}},this, colors[6]);
+
+        currentBlock = blocks[0];
+
         score = new Timer(delay, new ActionListener() {
             int n = 0;
             @Override
@@ -34,10 +74,15 @@ public class GameArea extends JPanel implements KeyListener{
         });
         score.start();
 
+        setFocusable(true);
+        addKeyListener(this);
+
     }
 
     private void update(){
-        block.update();
+        if (state == STATE_GAME_PLAY){
+            currentBlock.update();
+        }
     }
 
     @Override
@@ -46,14 +91,56 @@ public class GameArea extends JPanel implements KeyListener{
         g.setColor(Color.black);
         g.fillRect(0, 0, getWidth(), getHeight());
 
-        block.render(g);
+        currentBlock.render(g);
+
+        for (int row = 0 ; row < gamearea.length ; row++){
+            for (int col = 0 ; col < gamearea[row].length ; col++){
+                if (gamearea[row][col] != null){
+                    g.setColor(gamearea[row][col]);
+                    g.fillRect(col*block_size, row*block_size, block_size, block_size);
+                }
+            }
+        }
 
         g.setColor(Color.white);
-        for (int i=0; i<GameArea_height; i++){
+        for (int i=0; i<GameArea_height +1; i++){
             g.drawLine(0, block_size * i, block_size*GameArea_width, block_size*i);
         }
         for (int j=0; j<GameArea_width + 1; j++){
             g.drawLine(j*block_size, 0, j * block_size, block_size*GameArea_height);
+        }
+
+        if (state == STATE_GAME_OVER){
+            g.setColor(Color.white);
+            g.drawString("GAME OVER", 50, 200);
+        }
+        if (state == STATE_GAME_PAUSE){
+            g.drawString("GAME PAUSED !", 50, 200);
+        }
+
+    }
+
+    public Color[][] getGamearea(){
+        return gamearea;
+    }
+
+    public void setCurrentBlock(){
+        currentBlock = blocks[random.nextInt(blocks.length)];
+        currentBlock.resetGameArea();
+        GameOver();
+    }
+
+    private void GameOver(){
+        int[][] coords = currentBlock.getCoords();
+        for (int row=0; row<coords.length; row++){
+            for (int col=0; col<coords[0].length; col++){
+                if(coords[row][col] != 0){
+                    if(gamearea[row + currentBlock.getY()][col + currentBlock.getX()] != null){
+                        System.out.println("Game over !");
+                        state = STATE_GAME_OVER;
+                    }
+                }
+            }
         }
     }
 
@@ -63,20 +150,46 @@ public class GameArea extends JPanel implements KeyListener{
     @Override
     public void keyPressed(KeyEvent e) {
         if (e.getKeyCode() == KeyEvent.VK_DOWN){
-            block.FastSpeed();
+            currentBlock.FastSpeed();
         }
-        if (e.getKeyCode() == KeyEvent.VK_LEFT){
-            block.Left();
+        else if (e.getKeyCode() == KeyEvent.VK_LEFT){
+            currentBlock.Left();
         }
-        if (e.getKeyCode() == KeyEvent.VK_RIGHT){
-            block.Right();
+        else if (e.getKeyCode() == KeyEvent.VK_RIGHT){
+            currentBlock.Right();
+        }
+        else if (e.getKeyCode() == KeyEvent.VK_UP){
+            currentBlock.rotateBlock();
+        }
+
+
+        // Replay
+        if (state == STATE_GAME_OVER){
+            if (e.getKeyCode() == KeyEvent.VK_SPACE){
+                for (int row = 0 ; row < gamearea.length ; row++){
+                    for (int col = 0 ; col < gamearea[row].length ; col++){
+                        gamearea[row][col] = null;
+                    }
+                }
+                setCurrentBlock();
+                state = STATE_GAME_PLAY;
+            }
+        }
+
+        // Pause
+        if (e.getKeyCode() == KeyEvent.VK_SPACE){
+            if (state == STATE_GAME_PLAY){
+                state = STATE_GAME_PAUSE;
+            }else if (state ==STATE_GAME_PAUSE){
+                state = STATE_GAME_PLAY;
+            }
         }
     }
 
     @Override
     public void keyReleased(KeyEvent e) {
         if (e.getKeyCode() == KeyEvent.VK_DOWN){
-            block.NormalSpeed();
+            currentBlock.NormalSpeed();
         }
     }
 }

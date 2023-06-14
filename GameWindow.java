@@ -2,7 +2,7 @@ import javax.swing.*;
 
 public class GameWindow {
 
-    public static final int width = 445, height = 629;
+    public static final int width = 445, height = 700;
     private GameArea gameArea;
     private JFrame window;
 
