@@ -30,6 +30,8 @@ public class GameArea extends JPanel implements KeyListener{
     private Block currentBlock;
 
     private Random random;
+    private String timerString = "";
+    public int points = 0;
 
 
     public GameArea(){
@@ -62,20 +64,35 @@ public class GameArea extends JPanel implements KeyListener{
                 {1,1},
                 {1,1}},this, colors[6]);
 
-        currentBlock = blocks[0];
+        currentBlock = blocks[random.nextInt(blocks.length)];
 
         score = new Timer(delay, new ActionListener() {
             int n = 0;
+
             @Override
             public void actionPerformed(ActionEvent actionEvent) {
                 update();
                 repaint();
             }
         });
+
         score.start();
+        this.setLayout(new BorderLayout());
+        JButton home = new JButton("Home");
+        //this.add(home, BorderLayout.EAST);
 
         setFocusable(true);
         addKeyListener(this);
+
+        home.addActionListener(e -> {
+            Window window = SwingUtilities.getWindowAncestor(this); // Obtient la référence de la fenêtre parente
+            if (window instanceof JFrame) {
+                JFrame frame = (JFrame) window;
+                frame.dispose(); // Ferme la fenêtre principale
+            }
+            new Homepage();
+        });
+
 
     }
 
@@ -90,6 +107,11 @@ public class GameArea extends JPanel implements KeyListener{
         super.paintComponent(g);
         g.setColor(Color.black);
         g.fillRect(0, 0, getWidth(), getHeight());
+
+
+        g.setColor(Color.white);
+        String timerString = "Score: " + points + "s";
+        g.drawString(timerString, 340, 100);
 
         currentBlock.render(g);
 
@@ -138,6 +160,7 @@ public class GameArea extends JPanel implements KeyListener{
                     if(gamearea[row + currentBlock.getY()][col + currentBlock.getX()] != null){
                         System.out.println("Game over !");
                         state = STATE_GAME_OVER;
+                        new GameOverWindow(points);
                     }
                 }
             }

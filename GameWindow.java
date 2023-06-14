@@ -1,4 +1,5 @@
 import javax.swing.*;
+import java.awt.*;
 
 public class GameWindow {
 
@@ -13,14 +14,15 @@ public class GameWindow {
         window.setResizable(false);
         window.setLocationRelativeTo(null);
 
-        gameArea = new GameArea();
-        window.add(gameArea);
-        window.addKeyListener(gameArea);
-        window.addKeyListener(gameArea);
-        window.setVisible(true);
-    }
+        // Utilisation de BorderLayout pour la fenêtre
+        window.setLayout(new BorderLayout());
 
-    public static void main(String[] args){
-        new GameWindow();
+        gameArea = new GameArea();
+        window.add(gameArea, BorderLayout.CENTER);
+        window.addKeyListener(gameArea);
+
+
+
+        window.setVisible(true);
     }
 }

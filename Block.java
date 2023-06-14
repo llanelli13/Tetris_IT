@@ -37,6 +37,7 @@ public class Block {
                     }
                 }
             }
+            gameArea.points += 20;
             CheckLine();
             gameArea.setCurrentBlock();
             return;
