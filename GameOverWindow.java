@@ -38,7 +38,7 @@ public class GameOverWindow extends JFrame {
             @Override
             public void actionPerformed(ActionEvent e) {
                 String pseudo = name.getText();
-                Leaderboard.addEntry(pseudo, points); // Ajouter le nom et les points dans le fichier leaderboard
+                Leaderboard.addEntry(pseudo, points);
                 dispose();
                 new Leaderboard();
             }

@@ -20,12 +20,12 @@ public class Block {
     private int[][] coords;
 
 
-
     public Block(int [][] coords, GameArea gameArea, Color color){
         this.coords = coords;
         this.gameArea = gameArea;
         this.color = color;
     }
+
 
     public void update(){
         if (collision){
