@@ -13,9 +13,7 @@ public class Scoreboard extends JFrame{
 
 
         JButton home = new JButton("Home");
-
-
-
+        
         home.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent actionEvent) {
