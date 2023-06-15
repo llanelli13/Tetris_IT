@@ -7,7 +7,6 @@ import java.awt.event.KeyListener;
 import java.util.Random;
 
 public class GameArea extends JPanel implements KeyListener{
-
     public static int STATE_GAME_PLAY = 0;
     public static int STATE_GAME_PAUSE = 1;
     public static int STATE_GAME_OVER = 2;
@@ -32,10 +31,21 @@ public class GameArea extends JPanel implements KeyListener{
     private Random random;
     private String timerString = "";
     public int points = 0;
+    private Block nextBlock;
+    public enum GameMode {
+        SOLO,
+        VERSUS
+    }
+
+    private GameMode gameMode;
+    private GameArea secondPlayerArea;
 
 
-    public GameArea(){
 
+
+    public GameArea(GameMode gameMode){
+
+        this.gameMode = gameMode;
         random = new Random();
         blocks[0] = new Block(new int[][]{
                 {1,1,1,1}}, this, colors[0]);
@@ -146,6 +156,10 @@ public class GameArea extends JPanel implements KeyListener{
         return gamearea;
     }
 
+    public GameArea getSecondPlayerArea() {
+        return secondPlayerArea;
+    }
+
     public void setCurrentBlock(){
         currentBlock = blocks[random.nextInt(blocks.length)];
         currentBlock.resetGameArea();
@@ -167,23 +181,38 @@ public class GameArea extends JPanel implements KeyListener{
         }
     }
 
+    public void setSecondPlayerBlock() {
+        secondPlayerArea.setCurrentBlock();
+    }
+
+
     @Override
     public void keyTyped(KeyEvent e) {
     }
     @Override
     public void keyPressed(KeyEvent e) {
-        if (e.getKeyCode() == KeyEvent.VK_DOWN){
+        if (e.getKeyCode() == KeyEvent.VK_DOWN) {
             currentBlock.FastSpeed();
-        }
-        else if (e.getKeyCode() == KeyEvent.VK_LEFT){
+        } else if (e.getKeyCode() == KeyEvent.VK_LEFT) {
             currentBlock.Left();
-        }
-        else if (e.getKeyCode() == KeyEvent.VK_RIGHT){
+        } else if (e.getKeyCode() == KeyEvent.VK_RIGHT) {
             currentBlock.Right();
-        }
-        else if (e.getKeyCode() == KeyEvent.VK_UP){
+        } else if (e.getKeyCode() == KeyEvent.VK_UP) {
             currentBlock.rotateBlock();
         }
+
+        if (gameMode == GameMode.VERSUS) {
+            if (e.getKeyCode() == KeyEvent.VK_Q) {
+                secondPlayerArea.currentBlock.Left();
+            } else if (e.getKeyCode() == KeyEvent.VK_D) {
+                secondPlayerArea.currentBlock.Right();
+            } else if (e.getKeyCode() == KeyEvent.VK_Z) {
+                secondPlayerArea.currentBlock.rotateBlock();
+            } else if (e.getKeyCode() == KeyEvent.VK_S) {
+                secondPlayerArea.currentBlock.FastSpeed();
+            }
+        }
+
 
 
         // Replay
@@ -214,5 +243,9 @@ public class GameArea extends JPanel implements KeyListener{
         if (e.getKeyCode() == KeyEvent.VK_DOWN){
             currentBlock.NormalSpeed();
         }
+        else if (e.getKeyCode() == KeyEvent.VK_S) {
+            secondPlayerArea.currentBlock.NormalSpeed();
+        }
+
     }
 }

@@ -17,7 +17,7 @@ public class GameWindow {
         // Utilisation de BorderLayout pour la fenêtre
         window.setLayout(new BorderLayout());
 
-        gameArea = new GameArea();
+        gameArea = new GameArea(GameArea.GameMode.SOLO);
         window.add(gameArea, BorderLayout.CENTER);
         window.addKeyListener(gameArea);
 

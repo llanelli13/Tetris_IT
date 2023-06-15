@@ -20,9 +20,11 @@ public class Homepage extends JFrame {
 
         JButton play = new JButton("Jouer !");
         JButton leaderboard = new JButton("Leaderboard");
+        JButton versus = new JButton("Mode versus");
 
         contentPane.add(play);
         contentPane.add(leaderboard);
+        contentPane.add(versus);
 
         play.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
@@ -35,6 +37,14 @@ public class Homepage extends JFrame {
             public void actionPerformed(ActionEvent e) {
                 dispose();
                 new Leaderboard();
+            }
+        });
+
+        versus.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent actionEvent) {
+                dispose();
+                new ModeVersus();
             }
         });
 
