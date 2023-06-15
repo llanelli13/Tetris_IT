@@ -1,4 +1,1 @@
-Pierre,320
-Pierre,1000
-
-Pierre,1880
+Pierre,820

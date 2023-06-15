@@ -43,6 +43,8 @@ public class GameArea extends JPanel implements KeyListener{
     private int countdownTime;
 
 
+    private boolean gameOver = false;
+
 
 
 
@@ -133,11 +135,15 @@ public class GameArea extends JPanel implements KeyListener{
                 if (remainingTime < 0) {
                     state = STATE_GAME_OVER;
                     score.stop();
-                    timerString = "Time: 0s"; // Mettre à jour la variable du temps restant
+                    timerString = "Time: 0s";
                     repaint();
-                    new GameOverWindow(points);
+                        if (!gameOver) { // Vérifier si le jeu est déjà terminé pour éviter l'ouverture en boucle
+                        gameOver = true;
+                        new GameOverWindow(points, gameMode.name());
+                    }
+                    return;
                 } else {
-                    timerString = "Time: " + remainingTime + "s"; // Mettre à jour la variable du temps restant
+                    timerString = "Time: " + remainingTime + "s";
                     update();
                     repaint();
                 }
@@ -250,7 +256,7 @@ public class GameArea extends JPanel implements KeyListener{
 
         if (firstPlayerLost || secondPlayerLost) {
             state = STATE_GAME_OVER;
-            new GameOverWindow(points);
+            new GameOverWindow(points, gameMode.name());
             if (secondPlayerArea != null) {
                 secondPlayerArea.endGame();
             }
@@ -259,8 +265,6 @@ public class GameArea extends JPanel implements KeyListener{
 
     public void endGame() {
         state = STATE_GAME_OVER;
-        // Réaliser les actions nécessaires pour terminer la partie du deuxième joueur.
-        // Par exemple, afficher une fenêtre de fin de partie spécifique pour le deuxième joueur.
     }
 
     public void setState(int state) {

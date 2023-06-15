@@ -55,7 +55,7 @@ public class Homepage extends JFrame {
             @Override
             public void actionPerformed(ActionEvent e) {
                 dispose();
-                new CountDownMode();
+                new ChoseTimer();
             }
         });
 
