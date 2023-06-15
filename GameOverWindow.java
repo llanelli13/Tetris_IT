@@ -17,7 +17,7 @@ public class GameOverWindow extends JFrame {
         setLayout(new FlowLayout());
 
         JTextArea score = new JTextArea("Score: " + points);
-        score.setEditable(false); // Make the JTextArea non-editable
+        score.setEditable(false);
         JTextField name = new JTextField(15);
         JButton ajout = new JButton("Ajouter score !");
         JButton home = new JButton("Home");

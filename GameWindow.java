@@ -17,11 +17,9 @@ public class GameWindow {
         // Utilisation de BorderLayout pour la fenêtre
         window.setLayout(new BorderLayout());
 
-        gameArea = new GameArea(GameArea.GameMode.SOLO);
+        gameArea = new GameArea(GameArea.GameMode.SOLO, 99999999);
         window.add(gameArea, BorderLayout.CENTER);
         window.addKeyListener(gameArea);
-
-
 
         window.setVisible(true);
     }

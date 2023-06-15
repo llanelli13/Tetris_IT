@@ -20,6 +20,10 @@ public class Block {
     private int[][] coords;
 
 
+    public Color getColor() {
+        return color;
+    }
+
     public Block(int [][] coords, GameArea gameArea, Color color){
         this.coords = coords;
         this.gameArea = gameArea;
@@ -146,6 +150,24 @@ public class Block {
                 if(coords[row][col] != 0){
                     g.setColor(color);
                     g.fillRect(col * block_size + x * block_size, row * block_size + y * block_size, block_size, block_size);
+                }
+            }
+        }
+    }
+
+    public void renderNext(Graphics g, int x, int y) {
+        int blockSize = block_size / 2; // Taille réduite pour l'aperçu
+
+        int[][] coords = getCoords();
+        Color color = getColor();
+
+        for (int row = 0; row < coords.length; row++) {
+            for (int col = 0; col < coords[row].length; col++) {
+                if (coords[row][col] != 0) {
+                    int xPos = x + col * blockSize;
+                    int yPos = y + row * blockSize;
+                    g.setColor(color);
+                    g.fillRect(xPos, yPos, blockSize, blockSize);
                 }
             }
         }

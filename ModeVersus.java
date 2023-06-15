@@ -16,20 +16,35 @@ public class ModeVersus extends JFrame{
 
     public ModeVersus() {
         setTitle("Versus");
-        setSize(900,700);
+        setSize(1300, 700);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setResizable(false);
         setLocationRelativeTo(null);
 
-        setLayout(new GridLayout(1, 2));
+        setLayout(new BorderLayout());
 
-        firstPlayerArea = new GameArea(GameArea.GameMode.VERSUS);
-        secondPlayerArea = firstPlayerArea.getSecondPlayerArea();
+        firstPlayerArea = new GameArea(GameArea.GameMode.VERSUS, 9999999);
+        secondPlayerArea = new GameArea(GameArea.GameMode.VERSUS, 9999999);
+        firstPlayerArea.setSecondPlayerArea(secondPlayerArea); // Pass the secondPlayerArea reference
 
+        JPanel mainPanel = new JPanel(new GridLayout(1, 3));
+        mainPanel.add(firstPlayerArea);
+        mainPanel.add(createVSLabel());
+        mainPanel.add(secondPlayerArea);
 
-        add(firstPlayerArea);
-        add(secondPlayerArea);
+        add(mainPanel, BorderLayout.CENTER);
 
         setVisible(true);
     }
+
+    private JLabel createVSLabel() {
+        JLabel vsLabel = new JLabel("VS", SwingConstants.CENTER);
+        vsLabel.setFont(new Font("Arial", Font.BOLD, 32));
+        vsLabel.setForeground(Color.WHITE);
+        vsLabel.setBackground(Color.BLACK);
+        vsLabel.setOpaque(true);
+        vsLabel.setBorder(BorderFactory.createEmptyBorder(15, 45, 15, 45));
+        return vsLabel;
+    }
+
 }

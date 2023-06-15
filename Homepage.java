@@ -2,6 +2,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.zip.CheckedOutputStream;
 
 public class Homepage extends JFrame {
     private JPanel contentPane;
@@ -21,7 +22,9 @@ public class Homepage extends JFrame {
         JButton play = new JButton("Jouer !");
         JButton leaderboard = new JButton("Leaderboard");
         JButton versus = new JButton("Mode versus");
+        JButton countdown = new JButton("Mode Contre la montre");
 
+        contentPane.add(countdown);
         contentPane.add(play);
         contentPane.add(leaderboard);
         contentPane.add(versus);
@@ -45,6 +48,14 @@ public class Homepage extends JFrame {
             public void actionPerformed(ActionEvent actionEvent) {
                 dispose();
                 new ModeVersus();
+            }
+        });
+
+        countdown.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                dispose();
+                new CountDownMode();
             }
         });
 

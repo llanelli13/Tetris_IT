@@ -34,17 +34,21 @@ public class GameArea extends JPanel implements KeyListener{
     private Block nextBlock;
     public enum GameMode {
         SOLO,
-        VERSUS
+        VERSUS,
+        COUNTDOWN
     }
 
     private GameMode gameMode;
     private GameArea secondPlayerArea;
+    private int countdownTime;
 
 
 
 
-    public GameArea(GameMode gameMode){
 
+    public GameArea(GameMode gameMode, int countdownTime){
+
+        this.countdownTime = countdownTime;
         this.gameMode = gameMode;
         random = new Random();
         blocks[0] = new Block(new int[][]{
@@ -75,6 +79,7 @@ public class GameArea extends JPanel implements KeyListener{
                 {1,1}},this, colors[6]);
 
         currentBlock = blocks[random.nextInt(blocks.length)];
+        generateNextBlock();
 
         score = new Timer(delay, new ActionListener() {
             int n = 0;
@@ -95,22 +100,52 @@ public class GameArea extends JPanel implements KeyListener{
         addKeyListener(this);
 
         home.addActionListener(e -> {
-            Window window = SwingUtilities.getWindowAncestor(this); // Obtient la référence de la fenêtre parente
+            Window window = SwingUtilities.getWindowAncestor(this);
             if (window instanceof JFrame) {
                 JFrame frame = (JFrame) window;
-                frame.dispose(); // Ferme la fenêtre principale
+                frame.dispose();
             }
             new Homepage();
         });
 
-
-    }
-
-    private void update(){
-        if (state == STATE_GAME_PLAY){
-            currentBlock.update();
+        if (gameMode == GameMode.COUNTDOWN) {
+            startCountdown();
         }
     }
+
+    private void update() {
+        if (state == STATE_GAME_PLAY) {
+            currentBlock.update();
+        } else if (state == STATE_GAME_OVER) {
+            // Arrêter la mise à jour du jeu
+            score.stop();
+        }
+    }
+
+
+    private void startCountdown() {
+        Timer countdownTimer = new Timer(1000, new ActionListener() {
+            int remainingTime = countdownTime;
+
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                remainingTime--;
+                if (remainingTime < 0) {
+                    state = STATE_GAME_OVER;
+                    score.stop();
+                    timerString = "Time: 0s"; // Mettre à jour la variable du temps restant
+                    repaint();
+                    new GameOverWindow(points);
+                } else {
+                    timerString = "Time: " + remainingTime + "s"; // Mettre à jour la variable du temps restant
+                    update();
+                    repaint();
+                }
+            }
+        });
+        countdownTimer.start();
+    }
+
 
     @Override
     protected void paintComponent(Graphics g){
@@ -118,11 +153,19 @@ public class GameArea extends JPanel implements KeyListener{
         g.setColor(Color.black);
         g.fillRect(0, 0, getWidth(), getHeight());
 
+        g.setColor(Color.white);
+        g.drawString("Score: " + points + "s", 340, 100);
 
         g.setColor(Color.white);
-        String timerString = "Score: " + points + "s";
-        g.drawString(timerString, 340, 100);
+        g.drawString("Next Block:", 340, 200);
+        if (nextBlock != null) {
+            nextBlock.renderNext(g, 350, 220);
+        }
 
+        if (gameMode == GameMode.COUNTDOWN) {
+            g.setColor(Color.white);
+            g.drawString(timerString, 340, 150);
+        }
         currentBlock.render(g);
 
         for (int row = 0 ; row < gamearea.length ; row++){
@@ -156,30 +199,74 @@ public class GameArea extends JPanel implements KeyListener{
         return gamearea;
     }
 
-    public GameArea getSecondPlayerArea() {
-        return secondPlayerArea;
-    }
-
-    public void setCurrentBlock(){
-        currentBlock = blocks[random.nextInt(blocks.length)];
+    public void setCurrentBlock() {
+        currentBlock = nextBlock;
         currentBlock.resetGameArea();
+        generateNextBlock();
         GameOver();
     }
 
-    private void GameOver(){
+
+    private void generateNextBlock() {
+        nextBlock = blocks[random.nextInt(blocks.length)];
+    }
+
+
+    public void setSecondPlayerArea(GameArea secondPlayerArea) {
+        this.secondPlayerArea = secondPlayerArea;
+    }
+
+    private void GameOver() {
         int[][] coords = currentBlock.getCoords();
-        for (int row=0; row<coords.length; row++){
-            for (int col=0; col<coords[0].length; col++){
-                if(coords[row][col] != 0){
-                    if(gamearea[row + currentBlock.getY()][col + currentBlock.getX()] != null){
-                        System.out.println("Game over !");
-                        state = STATE_GAME_OVER;
-                        new GameOverWindow(points);
+        boolean firstPlayerLost = false;
+        boolean secondPlayerLost = false;
+
+        for (int row = 0; row < coords.length; row++) {
+            for (int col = 0; col < coords[0].length; col++) {
+                if (coords[row][col] != 0) {
+                    if (gamearea[row + currentBlock.getY()][col + currentBlock.getX()] != null) {
+                        System.out.println("First player game over!");
+                        firstPlayerLost = true;
+                        break;
                     }
                 }
             }
         }
+
+        if (secondPlayerArea != null) {
+            coords = secondPlayerArea.currentBlock.getCoords();
+            for (int row = 0; row < coords.length; row++) {
+                for (int col = 0; col < coords[0].length; col++) {
+                    if (coords[row][col] != 0) {
+                        if (secondPlayerArea.gamearea[row + secondPlayerArea.currentBlock.getY()][col + secondPlayerArea.currentBlock.getX()] != null) {
+                            System.out.println("Second player game over!");
+                            secondPlayerLost = true;
+                            break;
+                        }
+                    }
+                }
+            }
+        }
+
+        if (firstPlayerLost || secondPlayerLost) {
+            state = STATE_GAME_OVER;
+            new GameOverWindow(points);
+            if (secondPlayerArea != null) {
+                secondPlayerArea.endGame();
+            }
+        }
     }
+
+    public void endGame() {
+        state = STATE_GAME_OVER;
+        // Réaliser les actions nécessaires pour terminer la partie du deuxième joueur.
+        // Par exemple, afficher une fenêtre de fin de partie spécifique pour le deuxième joueur.
+    }
+
+    public void setState(int state) {
+        this.state = state;
+    }
+
 
     public void setSecondPlayerBlock() {
         secondPlayerArea.setCurrentBlock();
@@ -191,28 +278,27 @@ public class GameArea extends JPanel implements KeyListener{
     }
     @Override
     public void keyPressed(KeyEvent e) {
-        if (e.getKeyCode() == KeyEvent.VK_DOWN) {
+        if (e.getKeyCode() == KeyEvent.VK_S) {
             currentBlock.FastSpeed();
-        } else if (e.getKeyCode() == KeyEvent.VK_LEFT) {
+        } else if (e.getKeyCode() == KeyEvent.VK_Q) {
             currentBlock.Left();
-        } else if (e.getKeyCode() == KeyEvent.VK_RIGHT) {
+        } else if (e.getKeyCode() == KeyEvent.VK_D) {
             currentBlock.Right();
-        } else if (e.getKeyCode() == KeyEvent.VK_UP) {
+        } else if (e.getKeyCode() == KeyEvent.VK_Z) {
             currentBlock.rotateBlock();
         }
 
         if (gameMode == GameMode.VERSUS) {
-            if (e.getKeyCode() == KeyEvent.VK_Q) {
+            if (e.getKeyCode() == KeyEvent.VK_LEFT) {
                 secondPlayerArea.currentBlock.Left();
-            } else if (e.getKeyCode() == KeyEvent.VK_D) {
+            } else if (e.getKeyCode() == KeyEvent.VK_RIGHT) {
                 secondPlayerArea.currentBlock.Right();
-            } else if (e.getKeyCode() == KeyEvent.VK_Z) {
+            } else if (e.getKeyCode() == KeyEvent.VK_UP) {
                 secondPlayerArea.currentBlock.rotateBlock();
-            } else if (e.getKeyCode() == KeyEvent.VK_S) {
+            } else if (e.getKeyCode() == KeyEvent.VK_DOWN) {
                 secondPlayerArea.currentBlock.FastSpeed();
             }
         }
-
 
 
         // Replay
@@ -228,7 +314,6 @@ public class GameArea extends JPanel implements KeyListener{
             }
         }
 
-        // Pause
         if (e.getKeyCode() == KeyEvent.VK_SPACE){
             if (state == STATE_GAME_PLAY){
                 state = STATE_GAME_PAUSE;
@@ -236,16 +321,29 @@ public class GameArea extends JPanel implements KeyListener{
                 state = STATE_GAME_PLAY;
             }
         }
-    }
+
+        if (gameMode == GameMode.VERSUS) {
+            if (e.getKeyCode() == KeyEvent.VK_SPACE) {
+                if (state == STATE_GAME_PLAY) {
+                    state = STATE_GAME_PAUSE;
+                    secondPlayerArea.setState(STATE_GAME_PAUSE); // Mettre en pause la deuxième zone de jeu
+                } else if (state == STATE_GAME_PAUSE) {
+                    state = STATE_GAME_PLAY;
+                    secondPlayerArea.setState(STATE_GAME_PLAY); // Reprendre la deuxième zone de jeu
+                }
+            }
+        }
+}
 
     @Override
     public void keyReleased(KeyEvent e) {
-        if (e.getKeyCode() == KeyEvent.VK_DOWN){
+        if (e.getKeyCode() == KeyEvent.VK_S){
             currentBlock.NormalSpeed();
         }
-        else if (e.getKeyCode() == KeyEvent.VK_S) {
-            secondPlayerArea.currentBlock.NormalSpeed();
+        if (gameMode == GameMode.VERSUS) {
+            if (e.getKeyCode() == KeyEvent.VK_DOWN) {
+                secondPlayerArea.currentBlock.NormalSpeed();
+            }
         }
-
     }
 }
