@@ -2,11 +2,12 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.zip.CheckedOutputStream;
 
 public class Homepage extends JFrame {
-    private JPanel contentPane;
+    private final JPanel contentPane;
     public static final int width = 445, height = 700;
+
+    ImageIcon imageIcon = new ImageIcon("C:\\Users\\pierr\\Documents\\GitHub\\Tetris_IT\\tetris.jpg");
 
     public Homepage() {
         setTitle("Menu");
@@ -16,7 +17,7 @@ public class Homepage extends JFrame {
         setLocationRelativeTo(null);
 
         contentPane = new JPanel();
-        contentPane.setLayout(new FlowLayout());
+        contentPane.setLayout(new BoxLayout(contentPane, BoxLayout.Y_AXIS)); // Utilisation de BoxLayout
         setContentPane(contentPane);
 
         JButton play = new JButton("Jouer !");
@@ -24,10 +25,17 @@ public class Homepage extends JFrame {
         JButton versus = new JButton("Mode versus");
         JButton countdown = new JButton("Mode Contre la montre");
 
-        contentPane.add(countdown);
-        contentPane.add(play);
-        contentPane.add(leaderboard);
-        contentPane.add(versus);
+        JLabel fond = new JLabel(imageIcon);
+        fond.setAlignmentX(Component.CENTER_ALIGNMENT); // Centrer l'image horizontalement
+
+        contentPane.add(fond); // Ajouter l'image en haut du JPanel
+
+        JPanel buttonPanel = new JPanel(new FlowLayout()); // JPanel pour les boutons
+        buttonPanel.add(countdown);
+        buttonPanel.add(play);
+        buttonPanel.add(leaderboard);
+        buttonPanel.add(versus);
+        contentPane.add(buttonPanel); // Ajouter le panel des boutons en dessous de l'image
 
         play.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {

@@ -7,15 +7,15 @@ public class Block {
     public static final int block_size = 30;
 
     private int x = 4, y = 0;
-    private int normal = 600;
-    private int fast = 50;
+    private final int normal = 600;
+    private final int fast = 50;
     private int delayMovementTime = normal;
     private long beginTime;
 
     private int deltaX = 0;
     private boolean collision = false;
-    private GameArea gameArea;
-    private Color color;
+    private final GameArea gameArea;
+    private final Color color;
 
     private int[][] coords;
 
@@ -87,27 +87,52 @@ public class Block {
         }
     }
 
-    private void CheckLine(){
-        int BottomLine = gameArea.getGamearea().length - 1;
-        for (int topLine = gameArea.getGamearea().length - 1; topLine > 0 ; topLine--){
-            int count = 0;
-            for (int col = 0; col < gameArea.getGamearea()[0].length; col++){
-                if (gameArea.getGamearea()[topLine][col] != null){
-                    count++;
+    private void CheckLine() {
+        int bottomLine = gameArea.getGamearea().length - 1;
+        int completedLines = 0; // Variable pour compter le nombre de lignes complétées
+
+        for (int topLine = gameArea.getGamearea().length - 1; topLine > 0; topLine--) {
+            boolean lineCompleted = true;
+
+            for (int col = 0; col < gameArea.getGamearea()[0].length; col++) {
+                if (gameArea.getGamearea()[topLine][col] == null) {
+                    lineCompleted = false;
+                    break;
                 }
-                gameArea.getGamearea()[BottomLine][col] = gameArea.getGamearea()[topLine][col];
             }
-            if (count < gameArea.getGamearea()[0].length){
-                BottomLine--;
+
+            if (lineCompleted) {
+                completedLines++; // Incrémenter le nombre de lignes complétées
+                continue; // Passer au reste de la boucle pour la ligne complétée
+            }
+
+            for (int col = 0; col < gameArea.getGamearea()[0].length; col++) {
+                gameArea.getGamearea()[bottomLine][col] = gameArea.getGamearea()[topLine][col];
+            }
+            bottomLine--;
+        }
+
+        if (completedLines > 0) {
+            int pointsEarned = completedLines * 100; // Calculer les points en fonction du nombre de lignes complétées
+            gameArea.lines += completedLines; // Augmenter le nombre de lignes complétées
+            gameArea.points += pointsEarned; // Ajouter les points au score total
+        }
+
+        // Effacer les lignes restantes au-dessus des blocs déplacés
+        for (int line = bottomLine; line >= 0; line--) {
+            for (int col = 0; col < gameArea.getGamearea()[0].length; col++) {
+                gameArea.getGamearea()[line][col] = null;
             }
         }
     }
+
+
 
     public void rotateBlock(){
         int [][] rotatedBlock = transposeMatrice(coords);
         reverseRows(rotatedBlock);
         // Check pour que les blocks ne sortent pas de la grille
-        if ((x + rotatedBlock[0].length > gameArea.GameArea_width) || (y + rotatedBlock.length > 20)){
+        if ((x + rotatedBlock[0].length > GameArea.GameArea_width) || (y + rotatedBlock.length > 20)){
             return;
         }
 

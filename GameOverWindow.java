@@ -5,8 +5,8 @@ import java.awt.event.ActionListener;
 
 public class GameOverWindow extends JFrame {
 
-    private int points;
-    private  String mode;
+    private final int points;
+    private final String mode;
 
     public GameOverWindow(int points, String mode) {
         this.points = points;

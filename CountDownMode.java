@@ -3,8 +3,8 @@ import java.awt.*;
 
 public class CountDownMode extends JFrame {
 
-    private GameArea gameArea;
-    private int time;
+    private final GameArea gameArea;
+    private final int time;
 
     public CountDownMode(int time){
         this.time = time;

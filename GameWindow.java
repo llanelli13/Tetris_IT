@@ -4,8 +4,8 @@ import java.awt.*;
 public class GameWindow {
 
     public static final int width = 445, height = 700;
-    private GameArea gameArea;
-    private JFrame window;
+    private final GameArea gameArea;
+    private final JFrame window;
 
     public GameWindow(){
         window = new JFrame("Tetris");

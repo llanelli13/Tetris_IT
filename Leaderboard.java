@@ -13,8 +13,8 @@ public class Leaderboard extends JFrame {
     public static final int width = 445, height = 700;
     private static final String LEADERBOARD_FILE = "leaderboard.txt";
     private static final String COUNTDOWN_FILE = "LeaderboardCountDown.txt";
-    private JTable leaderboardTable;
-    private JTable countdownTable;
+    private final JTable leaderboardTable;
+    private final JTable countdownTable;
 
     public Leaderboard() {
         setTitle("Leaderboard");

@@ -4,7 +4,8 @@ import java.awt.*;
 public class ModeVersus extends JFrame{
 
 
-    private GameArea firstPlayerArea, secondPlayerArea;
+    private final GameArea firstPlayerArea;
+    private final GameArea secondPlayerArea;
     private JPanel firstPlayerPanel, secondPlayerPanel;
 
     public enum GameMode {

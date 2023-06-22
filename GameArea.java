@@ -13,24 +13,24 @@ public class GameArea extends JPanel implements KeyListener{
 
     private int state = STATE_GAME_PLAY;
 
-    private static int FPS = 60;
-    private static int delay = 1000 / FPS;
+    private static final int FPS = 60;
+    private static final int delay = 1000 / FPS;
     public static final int GameArea_width = 10;
     public static final int GameArea_height = 20;
     public static final int block_size = 30;
-    private Timer score;
-    private Color[][] gamearea = new Color[GameArea_height][GameArea_width];
-    private Block[] blocks = new Block[7];
+    private final Timer score;
+    private final Color[][] gamearea = new Color[GameArea_height][GameArea_width];
+    private final Block[] blocks = new Block[7];
 
     private Block block;
-    private Color[] colors = {Color.decode("#ed1c24"), Color.decode("#ff7f27"), Color.decode("#fff200"),
+    private final Color[] colors = {Color.decode("#ed1c24"), Color.decode("#ff7f27"), Color.decode("#fff200"),
                                 Color.decode("#22b14c"), Color.decode("#00a2e8"), Color.decode("#a249a4"), Color.decode("#3f48cc")};
 
     private Block currentBlock;
 
-    private Random random;
+    private final Random random;
     private String timerString = "";
-    public int points = 0;
+    public int points = 0, lines = 0;
     private Block nextBlock;
     public enum GameMode {
         SOLO,
@@ -38,9 +38,9 @@ public class GameArea extends JPanel implements KeyListener{
         COUNTDOWN
     }
 
-    private GameMode gameMode;
+    private final GameMode gameMode;
     private GameArea secondPlayerArea;
-    private int countdownTime;
+    private final int countdownTime;
 
 
     private boolean gameOver = false;
@@ -84,7 +84,7 @@ public class GameArea extends JPanel implements KeyListener{
         generateNextBlock();
 
         score = new Timer(delay, new ActionListener() {
-            int n = 0;
+            final int n = 0;
 
             @Override
             public void actionPerformed(ActionEvent actionEvent) {
@@ -103,8 +103,7 @@ public class GameArea extends JPanel implements KeyListener{
 
         home.addActionListener(e -> {
             Window window = SwingUtilities.getWindowAncestor(this);
-            if (window instanceof JFrame) {
-                JFrame frame = (JFrame) window;
+            if (window instanceof JFrame frame) {
                 frame.dispose();
             }
             new Homepage();
@@ -141,7 +140,6 @@ public class GameArea extends JPanel implements KeyListener{
                         gameOver = true;
                         new GameOverWindow(points, gameMode.name());
                     }
-                    return;
                 } else {
                     timerString = "Time: " + remainingTime + "s";
                     update();
@@ -160,17 +158,20 @@ public class GameArea extends JPanel implements KeyListener{
         g.fillRect(0, 0, getWidth(), getHeight());
 
         g.setColor(Color.white);
-        g.drawString("Score: " + points + "s", 340, 100);
+        g.drawString("Score: " + points + "s", 320, 100);
 
         g.setColor(Color.white);
-        g.drawString("Next Block:", 340, 200);
+        g.drawString("Nombre de ligne: " + lines , 320, 150);
+
+        g.setColor(Color.white);
+        g.drawString("Next Block:", 320, 200);
         if (nextBlock != null) {
-            nextBlock.renderNext(g, 350, 220);
+            nextBlock.renderNext(g, 320, 220);
         }
 
         if (gameMode == GameMode.COUNTDOWN) {
             g.setColor(Color.white);
-            g.drawString(timerString, 340, 150);
+            g.drawString(timerString, 320, 150);
         }
         currentBlock.render(g);
 
