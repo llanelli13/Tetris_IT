@@ -37,6 +37,7 @@ public class Homepage extends JFrame {
         play.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 TetrisMusic.stopCurrentMusic();
+                TetrisMusic.playLineCompleteMusic();
                 dispose();
                 new GameWindow();
             }
@@ -45,6 +46,7 @@ public class Homepage extends JFrame {
         leaderboard.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 TetrisMusic.stopCurrentMusic();
+                TetrisMusic.playLineCompleteMusic();
                 dispose();
                 new Leaderboard();
             }
@@ -54,6 +56,7 @@ public class Homepage extends JFrame {
             @Override
             public void actionPerformed(ActionEvent actionEvent) {
                 TetrisMusic.stopCurrentMusic();
+                TetrisMusic.playLineCompleteMusic();
                 dispose();
                 new ModeVersus();
             }
@@ -63,6 +66,7 @@ public class Homepage extends JFrame {
             @Override
             public void actionPerformed(ActionEvent e) {
                 TetrisMusic.stopCurrentMusic();
+                TetrisMusic.playLineCompleteMusic();
                 dispose();
                 new ChoseTimer();
             }

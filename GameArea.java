@@ -46,10 +46,14 @@ public class GameArea extends JPanel implements KeyListener{
     private boolean gameOver = false;
 
 
+    TetrisMusic tetrisMusic = new TetrisMusic();
+
 
 
     public GameArea(GameMode gameMode, int countdownTime){
 
+
+        TetrisMusic.playGameplayMusic();
         this.countdownTime = countdownTime;
         this.gameMode = gameMode;
         random = new Random();
@@ -137,8 +141,10 @@ public class GameArea extends JPanel implements KeyListener{
                     timerString = "Time: 0s";
                     repaint();
                         if (!gameOver) { // Vérifier si le jeu est déjà terminé pour éviter l'ouverture en boucle
-                        gameOver = true;
-                        new GameOverWindow(points, gameMode.name());
+                          gameOver = true;
+                          TetrisMusic.stopCurrentMusic();
+                          TetrisMusic.playGameOverMusic();
+                          new GameOverWindow(points, gameMode.name());
                     }
                 } else {
                     timerString = "Time: " + remainingTime + "s";

@@ -15,7 +15,6 @@ public class GameWindow {
         window.setResizable(false);
         window.setLocationRelativeTo(null);
 
-        tetrisMusic.playGameplayMusic();
 
         // Utilisation de BorderLayout pour la fenêtre
         window.setLayout(new BorderLayout());

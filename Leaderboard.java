@@ -84,6 +84,7 @@ public class Leaderboard extends JFrame {
         add(home, BorderLayout.SOUTH);
 
         home.addActionListener(e -> {
+            TetrisMusic.playLineCompleteMusic();
             dispose();
             new Homepage();
         });

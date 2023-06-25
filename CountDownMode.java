@@ -6,6 +6,8 @@ public class CountDownMode extends JFrame {
     private final GameArea gameArea;
     private final int time;
 
+    TetrisMusic tetrisMusic = new TetrisMusic();
+
     public CountDownMode(int time){
         this.time = time;
         setTitle("CountDown");
