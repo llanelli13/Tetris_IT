@@ -5,11 +5,19 @@ import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.util.Random;
+import java.awt.Graphics2D;
+import java.awt.Image;
+
 
 public class GameArea extends JPanel implements KeyListener{
     public static int STATE_GAME_PLAY = 0;
     public static int STATE_GAME_PAUSE = 1;
     public static int STATE_GAME_OVER = 2;
+
+
+    private Image transparentImage;
+
+
 
     private int state = STATE_GAME_PLAY;
 
@@ -52,9 +60,11 @@ public class GameArea extends JPanel implements KeyListener{
 
     public GameArea(GameMode gameMode, int countdownTime){
 
+        transparentImage = Toolkit.getDefaultToolkit().getImage("fond_tetris.png");
 
         TetrisMusic.playGameplayMusic();
         this.countdownTime = countdownTime;
+        setPreferredSize(new Dimension(800, 600));
         this.gameMode = gameMode;
         random = new Random();
         blocks[0] = new Block(new int[][]{
@@ -160,8 +170,10 @@ public class GameArea extends JPanel implements KeyListener{
     @Override
     protected void paintComponent(Graphics g){
         super.paintComponent(g);
-        g.setColor(Color.black);
-        g.fillRect(0, 0, getWidth(), getHeight());
+        Graphics2D g2d = (Graphics2D) g.create();
+
+        g2d.drawImage(transparentImage, 0, 0, getWidth(), getHeight(), this);
+
 
         g.setColor(Color.white);
         g.drawString("Score: " + points + "s", 320, 100);
@@ -205,7 +217,7 @@ public class GameArea extends JPanel implements KeyListener{
         if (state == STATE_GAME_PAUSE){
             g.drawString("GAME PAUSED !", 50, 200);
         }
-
+        g2d.dispose();
     }
 
     public Color[][] getGamearea(){

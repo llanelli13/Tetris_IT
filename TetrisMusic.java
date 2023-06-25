@@ -1,4 +1,5 @@
 import java.io.File;
+import java.util.HashMap;
 import javax.sound.sampled.AudioInputStream;
 import javax.sound.sampled.AudioSystem;
 import javax.sound.sampled.Clip;
@@ -7,6 +8,7 @@ import javax.swing.JOptionPane;
 public class TetrisMusic {
 
     private static Clip currentClip;
+    private static HashMap<String, Clip> playerMusicMap = new HashMap<>();
 
     public static void playMenuMusic() {
         playMusic("tetris_menu.wav", true);
@@ -50,6 +52,13 @@ public class TetrisMusic {
             currentClip.stop();
             currentClip.close();
             currentClip = null;
+        }
+    }
+
+    public static void stopMusicForPlayer(String playerName) {
+        Clip musicClip = playerMusicMap.get(playerName);
+        if (musicClip != null && musicClip.isRunning()) {
+            musicClip.stop();
         }
     }
 

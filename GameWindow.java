@@ -1,6 +1,7 @@
 import javax.swing.*;
 import java.awt.*;
 
+
 public class GameWindow {
 
     public static final int width = 445, height = 700;
