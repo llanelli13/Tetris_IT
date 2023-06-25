@@ -129,6 +129,7 @@ public class Block {
                 gameArea.getGamearea()[line][col] = null;
             }
         }
+        Homepage.playClear();
     }
 
 

@@ -171,7 +171,7 @@ public class GameArea extends JPanel implements KeyListener{
 
         if (gameMode == GameMode.COUNTDOWN) {
             g.setColor(Color.white);
-            g.drawString(timerString, 320, 150);
+            g.drawString(timerString, 320, 400);
         }
         currentBlock.render(g);
 
