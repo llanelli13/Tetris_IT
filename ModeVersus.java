@@ -8,6 +8,8 @@ public class ModeVersus extends JFrame{
     private final GameArea secondPlayerArea;
     private JPanel firstPlayerPanel, secondPlayerPanel;
 
+    TetrisMusic tetrisMusic = new TetrisMusic();
+
     public enum GameMode {
         SOLO,
         VERSUS
@@ -23,6 +25,8 @@ public class ModeVersus extends JFrame{
         setLocationRelativeTo(null);
 
         setLayout(new BorderLayout());
+
+        tetrisMusic.playGameplayMusic();
 
         firstPlayerArea = new GameArea(GameArea.GameMode.VERSUS, 9999999);
         secondPlayerArea = new GameArea(GameArea.GameMode.VERSUS, 9999999);
