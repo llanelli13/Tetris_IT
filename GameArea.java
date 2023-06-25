@@ -257,6 +257,8 @@ public class GameArea extends JPanel implements KeyListener{
 
         if (firstPlayerLost || secondPlayerLost) {
             state = STATE_GAME_OVER;
+            TetrisMusic.stopCurrentMusic();
+            TetrisMusic.playGameOverMusic();
             new GameOverWindow(points, gameMode.name());
             if (secondPlayerArea != null) {
                 secondPlayerArea.endGame();

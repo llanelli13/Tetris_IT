@@ -19,6 +19,8 @@ public class Block {
 
     private int[][] coords;
 
+    private TetrisMusic tetrisMusic = new TetrisMusic() ;
+
 
     public Color getColor() {
         return color;
@@ -116,6 +118,9 @@ public class Block {
             int pointsEarned = completedLines * 100; // Calculer les points en fonction du nombre de lignes complétées
             gameArea.lines += completedLines; // Augmenter le nombre de lignes complétées
             gameArea.points += pointsEarned; // Ajouter les points au score total
+
+            TetrisMusic.playLineCompleteMusic();
+
         }
 
         // Effacer les lignes restantes au-dessus des blocs déplacés
@@ -125,6 +130,7 @@ public class Block {
             }
         }
     }
+
 
 
 

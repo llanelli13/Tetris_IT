@@ -7,12 +7,15 @@ public class GameWindow {
     private final GameArea gameArea;
     private final JFrame window;
 
+    TetrisMusic tetrisMusic = new TetrisMusic();
     public GameWindow(){
         window = new JFrame("Tetris");
         window.setSize(width, height);
         window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         window.setResizable(false);
         window.setLocationRelativeTo(null);
+
+        tetrisMusic.playGameplayMusic();
 
         // Utilisation de BorderLayout pour la fenêtre
         window.setLayout(new BorderLayout());

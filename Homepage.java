@@ -7,7 +7,7 @@ public class Homepage extends JFrame {
     private final JPanel contentPane;
     public static final int width = 445, height = 700;
 
-    ImageIcon imageIcon = new ImageIcon("C:\\Users\\pierr\\Documents\\GitHub\\Tetris_IT\\tetris.jpg");
+    TetrisMusic tetrisMusic = new TetrisMusic();
 
     public Homepage() {
         setTitle("Menu");
@@ -20,15 +20,12 @@ public class Homepage extends JFrame {
         contentPane.setLayout(new BoxLayout(contentPane, BoxLayout.Y_AXIS)); // Utilisation de BoxLayout
         setContentPane(contentPane);
 
+        TetrisMusic.playMenuMusic();
+
         JButton play = new JButton("Jouer !");
         JButton leaderboard = new JButton("Leaderboard");
         JButton versus = new JButton("Mode versus");
         JButton countdown = new JButton("Mode Contre la montre");
-
-        JLabel fond = new JLabel(imageIcon);
-        fond.setAlignmentX(Component.CENTER_ALIGNMENT); // Centrer l'image horizontalement
-
-        contentPane.add(fond); // Ajouter l'image en haut du JPanel
 
         JPanel buttonPanel = new JPanel(new FlowLayout()); // JPanel pour les boutons
         buttonPanel.add(countdown);
@@ -39,6 +36,7 @@ public class Homepage extends JFrame {
 
         play.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
+                TetrisMusic.stopCurrentMusic();
                 dispose();
                 new GameWindow();
             }
@@ -46,6 +44,7 @@ public class Homepage extends JFrame {
 
         leaderboard.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
+                TetrisMusic.stopCurrentMusic();
                 dispose();
                 new Leaderboard();
             }
@@ -54,6 +53,7 @@ public class Homepage extends JFrame {
         versus.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent actionEvent) {
+                TetrisMusic.stopCurrentMusic();
                 dispose();
                 new ModeVersus();
             }
@@ -62,6 +62,7 @@ public class Homepage extends JFrame {
         countdown.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
+                TetrisMusic.stopCurrentMusic();
                 dispose();
                 new ChoseTimer();
             }
@@ -69,6 +70,7 @@ public class Homepage extends JFrame {
 
         setVisible(true);
     }
+
 
     public static void main(String[] args) {
         SwingUtilities.invokeLater(new Runnable() {
