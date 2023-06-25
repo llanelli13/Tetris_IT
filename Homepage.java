@@ -2,19 +2,24 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import javax.sound.sampled.LineUnavailableException;
+
+
 
 public class Homepage extends JFrame {
     private final JPanel contentPane;
     public static final int width = 445, height = 700;
+    private static Audio audioplayer = new Audio();
 
     ImageIcon imageIcon = new ImageIcon("C:\\Users\\pierr\\Documents\\GitHub\\Tetris_IT\\tetris.jpg");
 
-    public Homepage() {
+    public Homepage(Audio audioplayer) {
         setTitle("Menu");
         setSize(width, height);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setResizable(false);
         setLocationRelativeTo(null);
+        this.audioplayer = audioplayer;
 
         contentPane = new JPanel();
         contentPane.setLayout(new BoxLayout(contentPane, BoxLayout.Y_AXIS)); // Utilisation de BoxLayout
@@ -70,11 +75,24 @@ public class Homepage extends JFrame {
         setVisible(true);
     }
 
-    public static void main(String[] args) {
-        SwingUtilities.invokeLater(new Runnable() {
-            public void run() {
-                new Homepage();
-            }
-        });
+    public static void playClear() {
+        audioplayer.playClearLine();
     }
+
+    public static void playGame() {
+        audioplayer.playGameOver();
+    }
+
+public static void main(String[] args) {
+    SwingUtilities.invokeLater(new Runnable() {
+        public void run() {
+            try {
+                Audio audioplayer = new Audio();
+                new Homepage(audioplayer);
+            } catch (LineUnavailableException ex) {
+                ex.printStackTrace();
+            }
+        }
+    });
+}
 }

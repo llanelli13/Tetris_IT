@@ -58,6 +58,7 @@ public class GameOverWindow extends JFrame {
                 new Leaderboard();
             }
         });
+        Homepage.playGame();
 
         setVisible(true);
     }

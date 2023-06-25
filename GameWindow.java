@@ -20,6 +20,7 @@ public class GameWindow {
         gameArea = new GameArea(GameArea.GameMode.SOLO, 99999999);
         window.add(gameArea, BorderLayout.CENTER);
         window.addKeyListener(gameArea);
+        
 
         window.setVisible(true);
     }
