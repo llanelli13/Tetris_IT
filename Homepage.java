@@ -23,7 +23,7 @@ public class Homepage extends JFrame {
 
         // Créer un label pour afficher l'image en arrière-plan
         JLabel imageLabel = new JLabel();
-        ImageIcon menuImage = new ImageIcon("menu.png");
+        ImageIcon menuImage = new ImageIcon("menuv2.png");
         imageLabel.setIcon(menuImage);
 
         // Positionner l'image en arrière-plan au niveau le plus bas de la pile
