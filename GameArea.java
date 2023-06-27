@@ -23,6 +23,7 @@ public class GameArea extends JPanel implements KeyListener{
 
     private static final int FPS = 60;
     private static final int delay = 1000 / FPS;
+
     public static final int GameArea_width = 10;
     public static final int GameArea_height = 20;
     public static final int block_size = 30;
@@ -55,10 +56,12 @@ public class GameArea extends JPanel implements KeyListener{
 
 
     TetrisMusic tetrisMusic = new TetrisMusic();
+    private static int speed;
 
 
 
-    public GameArea(GameMode gameMode, int countdownTime){
+    public GameArea(GameMode gameMode, int countdownTime, int speed){
+        this.speed = speed;
 
         transparentImage = Toolkit.getDefaultToolkit().getImage("fond_tetris.png");
 

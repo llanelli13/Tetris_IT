@@ -7,8 +7,6 @@ public class Homepage extends JFrame {
     private final JLayeredPane layeredPane;
     public static final int width = 445, height = 700;
 
-    TetrisMusic tetrisMusic = new TetrisMusic();
-
     public Homepage() {
         setTitle("Menu");
         setSize(width, height);
@@ -71,7 +69,7 @@ public class Homepage extends JFrame {
                 TetrisMusic.stopCurrentMusic();
                 TetrisMusic.playLineCompleteMusic();
                 dispose();
-                new GameWindow();
+                new SpeedWindow();
             }
         });
 

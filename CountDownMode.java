@@ -16,7 +16,7 @@ public class CountDownMode extends JFrame {
         setResizable(false);
         setLocationRelativeTo(null);
 
-        gameArea = new GameArea(GameArea.GameMode.COUNTDOWN, time);
+        gameArea = new GameArea(GameArea.GameMode.COUNTDOWN, time, 600);
         add(gameArea, BorderLayout.CENTER);
         addKeyListener(gameArea);
 

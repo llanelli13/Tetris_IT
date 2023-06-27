@@ -9,7 +9,7 @@ public class GameWindow {
     private final JFrame window;
 
     TetrisMusic tetrisMusic = new TetrisMusic();
-    public GameWindow(){
+    public GameWindow(int speed){
         window = new JFrame("Tetris");
         window.setSize(width, height);
         window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -20,7 +20,7 @@ public class GameWindow {
         // Utilisation de BorderLayout pour la fenêtre
         window.setLayout(new BorderLayout());
 
-        gameArea = new GameArea(GameArea.GameMode.SOLO, 99999999);
+        gameArea = new GameArea(GameArea.GameMode.SOLO, 99999999, speed);
         window.add(gameArea, BorderLayout.CENTER);
         window.addKeyListener(gameArea);
 

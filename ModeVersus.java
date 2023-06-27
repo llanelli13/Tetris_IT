@@ -27,8 +27,9 @@ public class ModeVersus extends JFrame{
         setLayout(new BorderLayout());
 
 
-        firstPlayerArea = new GameArea(GameArea.GameMode.VERSUS, 9999999);
-        secondPlayerArea = new GameArea(GameArea.GameMode.VERSUS, 9999999);
+        tetrisMusic.playGameplayMusic();
+        firstPlayerArea = new GameArea(GameArea.GameMode.VERSUS, 9999999, 600);
+        secondPlayerArea = new GameArea(GameArea.GameMode.VERSUS, 9999999, 600);
         firstPlayerArea.setSecondPlayerArea(secondPlayerArea); // Pass the secondPlayerArea reference
 
         JPanel mainPanel = new JPanel(new GridLayout(1, 3));
