@@ -72,7 +72,7 @@ public class Homepage extends JFrame {
                 new SpeedWindow();
             }
         });
-
+uwu
         leaderboard.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 TetrisMusic.stopCurrentMusic();
