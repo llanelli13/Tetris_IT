@@ -9,7 +9,8 @@ public class Block {
     private int x = 4, y = 0;
     private final int normal = 600;
     private final int fast = 50;
-    private int delayMovementTime = normal;
+    private int delayMovementTime;
+    private int speed;
     private long beginTime;
 
     private int deltaX = 0;
@@ -26,10 +27,12 @@ public class Block {
         return color;
     }
 
-    public Block(int [][] coords, GameArea gameArea, Color color){
+    public Block(int [][] coords, GameArea gameArea, Color color, int speed){
         this.coords = coords;
         this.gameArea = gameArea;
         this.color = color;
+        this.speed = speed;
+        delayMovementTime = speed;
     }
 
 
@@ -223,11 +226,11 @@ public class Block {
 
 
     public void FastSpeed(){
-        delayMovementTime = fast;
+        this.delayMovementTime = fast;
     }
 
     public void NormalSpeed(){
-        delayMovementTime = normal;
+        this.delayMovementTime = speed;
     }
 
     public void Left(){

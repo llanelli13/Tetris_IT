@@ -13,14 +13,8 @@ public class GameArea extends JPanel implements KeyListener{
     public static int STATE_GAME_PLAY = 0;
     public static int STATE_GAME_PAUSE = 1;
     public static int STATE_GAME_OVER = 2;
-
-
     private Image transparentImage;
-
-
-
     private int state = STATE_GAME_PLAY;
-
     private static final int FPS = 60;
     private static final int delay = 1000 / FPS;
 
@@ -65,37 +59,40 @@ public class GameArea extends JPanel implements KeyListener{
 
         transparentImage = Toolkit.getDefaultToolkit().getImage("fond_tetris.png");
 
-        TetrisMusic.playGameplayMusic();
+        if ( gameMode != GameMode.VERSUS){
+            TetrisMusic.playGameplayMusic();
+        }
+
         this.countdownTime = countdownTime;
         setPreferredSize(new Dimension(800, 600));
         this.gameMode = gameMode;
         random = new Random();
         blocks[0] = new Block(new int[][]{
-                {1,1,1,1}}, this, colors[0]);
+                {1,1,1,1}}, this, colors[0], speed);
 
         blocks[1] = new Block(new int[][]{
                 {1,1,1},
-                {0,1,0}},this, colors[1]);
+                {0,1,0}},this, colors[1], speed);
 
         blocks[2] = new Block(new int[][]{
                 {1,1,1},
-                {1,0,0}},this, colors[2]);
+                {1,0,0}},this, colors[2], speed);
 
         blocks[3] = new Block(new int[][]{
                 {1,1,1},
-                {0,0,1}},this, colors[3]);
+                {0,0,1}},this, colors[3], speed);
 
         blocks[4] = new Block(new int[][]{
                 {0,1,1},
-                {1,1,0}},this, colors[4]);
+                {1,1,0}},this, colors[4], speed);
 
         blocks[5] = new Block(new int[][]{
                 {1,1,0},
-                {0,1,1}},this, colors[5]);
+                {0,1,1}},this, colors[5], speed);
 
         blocks[6] = new Block(new int[][]{
                 {1,1},
-                {1,1}},this, colors[6]);
+                {1,1}},this, colors[6], speed);
 
         currentBlock = blocks[random.nextInt(blocks.length)];
         generateNextBlock();
@@ -179,7 +176,7 @@ public class GameArea extends JPanel implements KeyListener{
 
 
         g.setColor(Color.white);
-        g.drawString("Score: " + points + "s", 320, 100);
+        g.drawString("Score: " + points + " pts", 320, 100);
 
         g.setColor(Color.white);
         g.drawString("Nombre de ligne: " + lines , 320, 150);
@@ -281,10 +278,10 @@ public class GameArea extends JPanel implements KeyListener{
             TetrisMusic.playGameOverMusic();
             JFrame currentFrame = (JFrame) SwingUtilities.getWindowAncestor(this); // Obtain the current frame
             currentFrame.dispose(); // Close the current frame
-            new GameOverWindow(points, gameMode.name());
             if (secondPlayerArea != null) {
                 secondPlayerArea.endGame();
             }
+            new GameOverWindow(points, gameMode.name());
         }
     }
 

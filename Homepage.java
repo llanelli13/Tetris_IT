@@ -69,10 +69,10 @@ public class Homepage extends JFrame {
                 TetrisMusic.stopCurrentMusic();
                 TetrisMusic.playLineCompleteMusic();
                 dispose();
-                new SpeedWindow();
+                new SpeedWindow("Solo");
             }
         });
-uwu
+
         leaderboard.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 TetrisMusic.stopCurrentMusic();
@@ -88,7 +88,7 @@ uwu
                 TetrisMusic.stopCurrentMusic();
                 TetrisMusic.playLineCompleteMusic();
                 dispose();
-                new ModeVersus();
+                new SpeedWindow("Versus");
             }
         });
 

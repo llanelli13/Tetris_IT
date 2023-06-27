@@ -16,8 +16,10 @@ public class ModeVersus extends JFrame{
     }
 
     private GameMode gameMode;
+    private int speed;
 
-    public ModeVersus() {
+    public ModeVersus(int speed) {
+        this.speed = speed;
         setTitle("Versus");
         setSize(1300, 700);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -28,8 +30,8 @@ public class ModeVersus extends JFrame{
 
 
         tetrisMusic.playGameplayMusic();
-        firstPlayerArea = new GameArea(GameArea.GameMode.VERSUS, 9999999, 600);
-        secondPlayerArea = new GameArea(GameArea.GameMode.VERSUS, 9999999, 600);
+        firstPlayerArea = new GameArea(GameArea.GameMode.VERSUS, 9999999, speed);
+        secondPlayerArea = new GameArea(GameArea.GameMode.VERSUS, 9999999, speed);
         firstPlayerArea.setSecondPlayerArea(secondPlayerArea); // Pass the secondPlayerArea reference
 
         JPanel mainPanel = new JPanel(new GridLayout(1, 3));

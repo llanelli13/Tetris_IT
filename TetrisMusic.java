@@ -36,8 +36,8 @@ public class TetrisMusic {
                 clip.open(audioInput);
                 if (loop) {
                     clip.loop(Clip.LOOP_CONTINUOUSLY);
+                    currentClip = clip;
                 }
-                currentClip = clip;
                 clip.start();
             } else {
                 System.out.println("Can't find file: " + filename);
